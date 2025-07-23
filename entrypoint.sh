@@ -3,6 +3,8 @@ set -e
 
 mkdir -p logs
 
+export DJANGO_SETTINGS_MODULE=agronegocio.settings
+
 MAX_ATTEMPTS=30
 ATTEMPT=1
 
