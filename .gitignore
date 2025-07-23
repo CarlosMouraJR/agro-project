@@ -1,0 +1,24 @@
+# Ambiente virtual
+.venv/
+
+# Arquivos de ambiente e configuração sensível
+.env
+logs/
+
+# Cache e arquivos temporários Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Arquivos do sistema
+.DS_Store
+*.swp
+*~
+
+# Arquivos do editor / IDE (se você usa algum, pode adicionar aqui)
+.vscode/
+.idea/
+
+# Arquivos gerados pelo Django (opcional, se usar collectstatic)
+staticfiles/
+media/

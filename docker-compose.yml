@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:16
+    container_name: agro_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+  api:
+    build: .
+    container_name: agro_api
+    command: /bin/sh -c "mkdir -p /code/logs && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/code
+      - logs_volume:/code/logs
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+volumes:
+  pgdata:
+    driver: local
+  logs_volume:
+    driver: local
