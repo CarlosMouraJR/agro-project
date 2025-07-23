@@ -21,5 +21,23 @@ done
 echo "✅ Banco disponível, aplicando migrations..."
 python manage.py migrate --noinput
 
+echo "⏳ Verificando se banco precisa ser populado..."
+
+TABLE_NAME="agronegocio_producer"
+
+TABLE_EXISTS=$(python -c "from django.db import connection; cursor=connection.cursor(); cursor.execute(\"SELECT to_regclass('public.${TABLE_NAME}')\"); print(cursor.fetchone()[0])")
+
+if [ "$TABLE_EXISTS" = "$TABLE_NAME" ]; then
+  ROW_COUNT=$(python -c "from django.db import connection; cursor=connection.cursor(); cursor.execute(\"SELECT COUNT(*) FROM ${TABLE_NAME}\"); print(cursor.fetchone()[0])")
+  if [ "$ROW_COUNT" -eq 0 ]; then
+    echo "🚀 Banco vazio, rodando seed..."
+    python manage.py seed
+  else
+    echo "✅ Banco já populado, pulando seed."
+  fi
+else
+  echo "❌ Tabela ${TABLE_NAME} não encontrada."
+fi
+
 echo "🚀 Iniciando servidor Django..."
 exec "$@"
