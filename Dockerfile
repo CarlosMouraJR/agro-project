@@ -25,3 +25,5 @@ RUN apt-get update && apt-get install -y netcat-openbsd && apt-get upgrade -y &&
 
 # Usa o entrypoint para controlar startup
 ENTRYPOINT ["/code/entrypoint.sh"]
+
+CMD ["gunicorn", "agronegocio.wsgi:application", "--bind", "0.0.0.0:8000"]
